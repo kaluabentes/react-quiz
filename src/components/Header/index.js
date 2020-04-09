@@ -29,14 +29,16 @@ export default function Header({ title, navItems, onNavItemClick }) {
         <Navbar.Toggle aria-controls="basic-navbar-nav" />
         <Navbar.Collapse id="basic-navbar-nav" className="justify-content-end">
           <Nav>
-            {navItems.map((item) => (
-              <Nav.Link
-                key={item.path}
-                onClick={() => onNavItemClick(item.path)}
-              >
-                {item.label}
-              </Nav.Link>
-            ))}
+            {navItems
+              .filter((item) => !item.isNotNavItem)
+              .map((item) => (
+                <Nav.Link
+                  key={item.path}
+                  onClick={() => onNavItemClick(item.path)}
+                >
+                  {item.label}
+                </Nav.Link>
+              ))}
           </Nav>
         </Navbar.Collapse>
       </Container>
