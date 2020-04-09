@@ -9,6 +9,7 @@ const PROP_TYPES = {
   title: PropTypes.string,
   answers: PropTypes.arrayOf(PropTypes.string),
   correctAnswer: PropTypes.string,
+  modalTitle: PropTypes.string,
 };
 
 const DEFAULT_PROPS = {
@@ -18,12 +19,14 @@ const DEFAULT_PROPS = {
   title: "",
   answers: [],
   correctAnswer: "",
+  modalTitle: "Question Wizard",
 };
 
 export default function QuestionWizard({
   isOpen,
   onClose,
   onSave,
+  modalTitle,
   title,
   answers,
   correctAnswer,
@@ -31,7 +34,7 @@ export default function QuestionWizard({
   return (
     <Modal show={isOpen} onHide={onClose}>
       <Modal.Header closeButton>
-        <Modal.Title>Question Wizard</Modal.Title>
+        <Modal.Title>{modalTitle}</Modal.Title>
       </Modal.Header>
       <Modal.Body>
         <Form.Group controlId="title">
