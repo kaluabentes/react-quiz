@@ -1,7 +1,7 @@
 import { createStore } from "redux";
 import throttle from "lodash/throttle";
 
-import rootReducer from "./modules/rootReducer";
+import rootReducer from "./rootReducer";
 import { loadState, saveState } from "utils/localStorage";
 
 const store = createStore(
@@ -10,6 +10,7 @@ const store = createStore(
   window.__REDUX_DEVTOOLS_EXTENSION__ && window.__REDUX_DEVTOOLS_EXTENSION__()
 );
 
+// Persist state on localStorage
 store.subscribe(
   throttle(() => {
     saveState(store.getState());
