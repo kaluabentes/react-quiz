@@ -28,7 +28,7 @@ export default function Quizzes() {
   const history = useHistory();
 
   const redirectToQuiz = (id) => {
-    history.push(`/manage/quizzes/${id}`);
+    history.push(`/admin/quizzes/${id}`);
   };
 
   const handleCreateClick = () => {
@@ -42,7 +42,6 @@ export default function Quizzes() {
       const id = uuidv4();
 
       dispatch(createQuiz({ id, quiz }));
-      redirectToQuiz(id);
     }
 
     if (wizardMode === "update") {
@@ -79,7 +78,7 @@ export default function Quizzes() {
   return (
     <Layout title="Quizzes">
       <PageTitle>
-        Manage quizzes <Button onClick={handleCreateClick}>Create</Button>
+        Quizzes <Button onClick={handleCreateClick}>Create</Button>
       </PageTitle>
       {quizzes.length > 0 ? (
         <Table bordered>

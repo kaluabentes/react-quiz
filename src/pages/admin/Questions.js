@@ -13,6 +13,7 @@ import AnswerText from "components/AnswerText";
 import {
   createQuestion,
   updateQuestion,
+  removeQuestion,
 } from "store/modules/questions/actions";
 
 import getListFrom from "utils/getListFrom";
@@ -94,14 +95,23 @@ export default function Questions() {
     setAnswers(newAnswers);
   };
 
+  const handleRemoveClick = (id) => {
+    if (window.confirm("Are you sure?")) {
+      dispatch(removeQuestion({ quizId, questionId: id }));
+    }
+  };
+
+  const handleCloseClick = () => {
+    setIsWizardOpen(false);
+  };
+
   return (
     <Layout title="Quizzes">
       <small>{quiz.title}</small>
       <PageTitle>
-        Manage questions{" "}
-        <Button onClick={handleCreateClick}>Add question</Button>
+        Questions <Button onClick={handleCreateClick}>Add question</Button>
       </PageTitle>
-      {questions ? (
+      {questions && questions.length > 0 ? (
         questions.map((question, index) => (
           <QuestionCard
             key={question.id}
@@ -112,7 +122,9 @@ export default function Questions() {
                   Editar
                 </Button>
                 &nbsp;&nbsp;
-                <Button>Remove</Button>
+                <Button onClick={() => handleRemoveClick(question.id)}>
+                  Remove
+                </Button>
               </>
             }
           >
@@ -140,6 +152,7 @@ export default function Questions() {
         onAnswerChange={handleAnswerChange}
         onAnswerRemove={handleAnswerRemove}
         onSave={handleSaveClick}
+        onClose={handleCloseClick}
       />
     </Layout>
   );

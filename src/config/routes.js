@@ -1,8 +1,8 @@
 import React from "react";
 
 import Home from "pages/Home";
-import ManageQuizzes from "pages/manage/Quizzes";
-import ManageQuestions from "pages/manage/Questions";
+import AdminQuizzes from "pages/admin/Quizzes";
+import AdminQuestions from "pages/admin/Questions";
 
 export default [
   {
@@ -11,13 +11,13 @@ export default [
     component: <Home />,
   },
   {
-    label: "Manage",
-    path: "/manage/quizzes",
-    component: <ManageQuizzes />,
+    label: "Admin",
+    path: "/admin/quizzes",
+    component: <AdminQuizzes />,
   },
   {
-    path: "/manage/quizzes/:quizId",
-    component: <ManageQuestions />,
+    path: "/admin/quizzes/:quizId",
+    component: <AdminQuestions />,
     isNotNavItem: true,
   },
 ];
