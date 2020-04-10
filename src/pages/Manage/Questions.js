@@ -1,5 +1,7 @@
 import React from "react";
 import { Button, Card } from "react-bootstrap";
+import { useSelector } from "react-redux";
+import { useParams } from "react-router-dom";
 
 import Layout from "templates/Layout";
 import PageTitle from "components/PageTitle";
@@ -55,8 +57,13 @@ const questions = [
 ];
 
 export default function Questions() {
+  const { id } = useParams();
+  const { quizzes } = useSelector((state) => state);
+  const quiz = quizzes[id];
+
   return (
     <Layout title="Quizzes">
+      <small>{quiz.title}</small>
       <PageTitle>
         Manage questions <Button>Add question</Button>
       </PageTitle>
@@ -82,7 +89,7 @@ export default function Questions() {
           ))}
         </QuestionCard>
       ))}
-      <QuestionWizard isOpen answers={questions[0].answers} />
+      <QuestionWizard isOpen={false} answers={questions[0].answers} />
     </Layout>
   );
 }

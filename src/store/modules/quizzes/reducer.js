@@ -14,7 +14,12 @@ const INITIAL_STATE = {};
 
 export default createReducer(INITIAL_STATE, {
   [createQuiz]: (state, action) => {
-    state[uuidv4()] = action.payload;
+    const { id, quiz } = action.payload;
+
+    state[id] = {
+      ...quiz,
+      questions: {},
+    };
   },
   [updateQuiz]: (state, action) => {
     const { id, quiz } = action.payload;
