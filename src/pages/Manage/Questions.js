@@ -10,21 +10,27 @@ import QuestionCard from "components/QuestionCard";
 import QuestionWizard from "components/QuestionWizard";
 import AnswerText from "components/AnswerText";
 
-import { createQuestion } from "store/modules/questions/actions";
+import {
+  createQuestion,
+  updateQuestion,
+} from "store/modules/questions/actions";
 
-import { getQuestions, getAnswers } from "./utils";
+import getListFrom from "utils/getListFrom";
 
 export default function Questions() {
-  const { id } = useParams();
+  const { quizId } = useParams();
   const { quizzes, questions: questionsMap } = useSelector((state) => state);
-  const quiz = quizzes[id];
-  const questions = getQuestions(questionsMap, id);
+  const quiz = quizzes[quizId];
+  const questions = questionsMap[quizId] && getListFrom(questionsMap[quizId]);
   const [isWizardOpen, setIsWizardOpen] = useState(false);
   const [question, setQuestion] = useState({ title: "", correctAnswer: "" });
   const [answers, setAnswers] = useState({});
   const dispatch = useDispatch();
+  const [wizardMode, setWizardMode] = useState("");
+  const [questionId, setQuestionId] = useState("");
 
   const handleCreateClick = () => {
+    setWizardMode("create");
     setIsWizardOpen(true);
   };
 
@@ -38,14 +44,18 @@ export default function Questions() {
   const handleAddAnswer = () => {
     setAnswers({
       ...answers,
-      [uuidv4()]: "",
+      [uuidv4()]: {
+        content: "",
+      },
     });
   };
 
   const handleAnswerChange = (id, value) => {
     setAnswers({
       ...answers,
-      [id]: value,
+      [id]: {
+        content: value,
+      },
     });
   };
 
@@ -54,8 +64,34 @@ export default function Questions() {
       ...question,
       answers,
     };
-    dispatch(createQuestion({ quizId: id, question: payload }));
+
+    if (wizardMode === "create") {
+      dispatch(createQuestion({ quizId, question: payload }));
+    }
+
+    if (wizardMode === "update") {
+      dispatch(updateQuestion({ quizId, questionId, question: payload }));
+    }
+
     setIsWizardOpen(false);
+    setAnswers({});
+    setQuestion({});
+    setWizardMode("");
+  };
+
+  const handleEditClick = (id) => {
+    setWizardMode("update");
+    setQuestion(questionsMap[quizId][id]);
+    setAnswers(questionsMap[quizId][id].answers);
+    setQuestionId(id);
+    setIsWizardOpen(true);
+  };
+
+  const handleAnswerRemove = (answerId) => {
+    const newAnswers = { ...answers };
+
+    delete newAnswers[answerId];
+    setAnswers(newAnswers);
   };
 
   return (
@@ -72,13 +108,16 @@ export default function Questions() {
             title={`Question #${index + 1}`}
             footer={
               <>
-                <Button>Editar</Button>&nbsp;&nbsp;
+                <Button onClick={() => handleEditClick(question.id)}>
+                  Editar
+                </Button>
+                &nbsp;&nbsp;
                 <Button>Remove</Button>
               </>
             }
           >
             <Card.Title>{question.title}</Card.Title>
-            {getAnswers(question.answers).map((answer) => (
+            {getListFrom(question.answers).map((answer) => (
               <AnswerText
                 isCorrect={answer.content === question.correctAnswer}
                 key={answer.id}
@@ -94,11 +133,12 @@ export default function Questions() {
       <QuestionWizard
         isOpen={isWizardOpen}
         title={question.title}
-        answers={getAnswers(answers)}
+        answers={getListFrom(answers)}
         correctAnswer={question.correctAnswer}
         onInputChange={handleInputChange}
         onAddAnswer={handleAddAnswer}
         onAnswerChange={handleAnswerChange}
+        onAnswerRemove={handleAnswerRemove}
         onSave={handleSaveClick}
       />
     </Layout>

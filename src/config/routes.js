@@ -16,7 +16,7 @@ export default [
     component: <ManageQuizzes />,
   },
   {
-    path: "/manage/quizzes/:id",
+    path: "/manage/quizzes/:quizId",
     component: <ManageQuestions />,
     isNotNavItem: true,
   },

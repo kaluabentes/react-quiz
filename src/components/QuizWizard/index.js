@@ -3,7 +3,7 @@ import PropTypes from "prop-types";
 import { Modal, Button, Form } from "react-bootstrap";
 
 const PROP_TYPES = {
-  isOpen: PropTypes.string,
+  isOpen: PropTypes.bool,
   onClose: PropTypes.func,
   onSave: PropTypes.func,
   onInputChange: PropTypes.func,

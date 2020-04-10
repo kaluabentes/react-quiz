@@ -14,11 +14,11 @@ import {
   removeQuiz,
 } from "store/modules/quizzes/actions";
 
-import { getQuizzes } from "./utils";
+import getListFrom from "utils/getListFrom";
 
 export default function Quizzes() {
   const quizzesMap = useSelector((state) => state.quizzes);
-  const quizzes = getQuizzes(quizzesMap);
+  const quizzes = getListFrom(quizzesMap);
   const [isWizardOpen, setIsWizardOpen] = useState(false);
   const [wizardTitle, setWizardTitle] = useState("");
   const [quiz, setQuiz] = useState({});

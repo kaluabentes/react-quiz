@@ -15,13 +15,13 @@ export default createReducer(INITIAL_STATE, {
     };
   },
   [updateQuestion]: (state, action) => {
-    const { quizId, id, question } = action;
+    const { quizId, questionId, question } = action.payload;
 
-    state[quizId][id] = question;
+    state[quizId][questionId] = question;
   },
   [removeQuestion]: (state, action) => {
-    const { quizId, id } = action;
+    const { quizId, questionId } = action.payload;
 
-    delete state[quizId][id];
+    delete state[quizId][questionId];
   },
 });

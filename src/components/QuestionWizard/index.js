@@ -9,6 +9,7 @@ const PROP_TYPES = {
   onInputChange: PropTypes.func,
   onAddAnswer: PropTypes.func,
   onAnswerChange: PropTypes.func,
+  onAnswerRemove: PropTypes.func,
   title: PropTypes.string,
   answers: PropTypes.arrayOf(
     PropTypes.shape({
@@ -27,6 +28,7 @@ const DEFAULT_PROPS = {
   onInputChange: () => {},
   onAddAnswer: () => {},
   onAnswerChange: () => {},
+  onAnswerRemove: () => {},
   title: "",
   answers: [],
   correctAnswer: "",
@@ -40,6 +42,7 @@ export default function QuestionWizard({
   onInputChange,
   onAddAnswer,
   onAnswerChange,
+  onAnswerRemove,
   modalTitle,
   title,
   answers,
@@ -62,7 +65,7 @@ export default function QuestionWizard({
           />
         </Form.Group>
 
-        <Form.Group controlId="answer">
+        <Form.Group>
           <Form.Label>Answers</Form.Label>
           {answers.map((answer) => (
             <p>
@@ -76,7 +79,9 @@ export default function QuestionWizard({
                   }
                 />
                 <InputGroup.Append>
-                  <Button>Remove</Button>
+                  <Button onClick={() => onAnswerRemove(answer.id)}>
+                    Remove
+                  </Button>
                 </InputGroup.Append>
               </InputGroup>
             </p>
