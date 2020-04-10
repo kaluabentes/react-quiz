@@ -16,8 +16,7 @@ export default function Index() {
       <Jumbotron>
         <h1>Test your knowledge!</h1>
         <p>
-          With our quizzes you can test and be confident about what you is
-          learning.
+          With our quizzes you can test and be confident about what you know.
         </p>
         <p>
           <Button onClick={handleStartButtonClick} variant="primary">
