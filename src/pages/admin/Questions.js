@@ -29,6 +29,7 @@ export default function Questions() {
   const dispatch = useDispatch();
   const [wizardMode, setWizardMode] = useState("");
   const [questionId, setQuestionId] = useState("");
+  const [error, setError] = useState(undefined);
 
   const handleCreateClick = () => {
     setWizardMode("create");
@@ -66,6 +67,33 @@ export default function Questions() {
       answers,
     };
 
+    if (question.title.length < 1) {
+      setError(
+        <span>
+          The <strong>title</strong> field is required
+        </span>
+      );
+      return;
+    }
+
+    if (Object.keys(answers).length < 4) {
+      setError(
+        <span>
+          Need at least <strong>4 answers</strong> to be added
+        </span>
+      );
+      return;
+    }
+
+    if (question.correctAnswer.length < 1) {
+      setError(
+        <span>
+          The <strong>correct answer</strong> field is required
+        </span>
+      );
+      return;
+    }
+
     if (wizardMode === "create") {
       dispatch(createQuestion({ quizId, question: payload }));
     }
@@ -76,8 +104,9 @@ export default function Questions() {
 
     setIsWizardOpen(false);
     setAnswers({});
-    setQuestion({});
+    setQuestion({ title: "", correctAnswer: "" });
     setWizardMode("");
+    setError(undefined);
   };
 
   const handleEditClick = (id) => {
@@ -153,6 +182,7 @@ export default function Questions() {
         onAnswerRemove={handleAnswerRemove}
         onSave={handleSaveClick}
         onClose={handleCloseClick}
+        error={error}
       />
     </Layout>
   );

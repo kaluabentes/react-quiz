@@ -1,6 +1,6 @@
 import React from "react";
 import PropTypes from "prop-types";
-import { Modal, Button, Form, InputGroup } from "react-bootstrap";
+import { Modal, Button, Form, InputGroup, Alert } from "react-bootstrap";
 
 const PROP_TYPES = {
   isOpen: PropTypes.bool,
@@ -19,6 +19,7 @@ const PROP_TYPES = {
   ),
   correctAnswer: PropTypes.string,
   modalTitle: PropTypes.string,
+  error: PropTypes.node,
 };
 
 const DEFAULT_PROPS = {
@@ -33,6 +34,7 @@ const DEFAULT_PROPS = {
   answers: [],
   correctAnswer: "",
   modalTitle: "Question Wizard",
+  error: undefined,
 };
 
 export default function QuestionWizard({
@@ -47,6 +49,7 @@ export default function QuestionWizard({
   title,
   answers,
   correctAnswer,
+  error,
 }) {
   return (
     <Modal show={isOpen} onHide={onClose}>
@@ -54,6 +57,7 @@ export default function QuestionWizard({
         <Modal.Title>{modalTitle}</Modal.Title>
       </Modal.Header>
       <Modal.Body>
+        {error && <Alert variant="danger">{error}</Alert>}
         <Form.Group controlId="title">
           <Form.Label>Title</Form.Label>
           <Form.Control

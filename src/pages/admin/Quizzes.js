@@ -21,11 +21,12 @@ export default function Quizzes() {
   const quizzes = getListFrom(quizzesMap);
   const [isWizardOpen, setIsWizardOpen] = useState(false);
   const [wizardTitle, setWizardTitle] = useState("");
-  const [quiz, setQuiz] = useState({});
+  const [quiz, setQuiz] = useState({ title: "" });
   const [wizardMode, setWizardMode] = useState("");
   const [quizId, setQuizId] = useState(undefined);
   const dispatch = useDispatch();
   const history = useHistory();
+  const [error, setError] = useState(undefined);
 
   const redirectToQuiz = (id) => {
     history.push(`/admin/quizzes/${id}`);
@@ -37,7 +38,16 @@ export default function Quizzes() {
     setIsWizardOpen(true);
   };
 
-  const handleWizardSave = () => {
+  const handleSaveClick = () => {
+    if (quiz.title.length < 1) {
+      setError(
+        <span>
+          The <strong>title</strong> field is required
+        </span>
+      );
+      return;
+    }
+
     if (wizardMode === "create") {
       const id = uuidv4();
 
@@ -49,9 +59,11 @@ export default function Quizzes() {
     }
 
     setIsWizardOpen(false);
+    setError(undefined);
+    setQuiz({ title: "" });
   };
 
-  const handleWizardClose = () => {
+  const handleCloseClick = () => {
     setIsWizardOpen(false);
   };
 
@@ -114,9 +126,10 @@ export default function Quizzes() {
         isOpen={isWizardOpen}
         modalTitle={wizardTitle}
         title={quiz.title}
-        onSave={handleWizardSave}
-        onClose={handleWizardClose}
+        onSave={handleSaveClick}
+        onClose={handleCloseClick}
         onInputChange={handleInputChange}
+        error={error}
       />
     </Layout>
   );
