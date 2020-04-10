@@ -14,12 +14,11 @@ import {
   removeQuiz,
 } from "store/modules/quizzes/actions";
 
+import { getQuizzes } from "./utils";
+
 export default function Quizzes() {
   const quizzesMap = useSelector((state) => state.quizzes);
-  const quizzes = Object.keys(quizzesMap).map((key) => ({
-    id: key,
-    ...quizzesMap[key],
-  }));
+  const quizzes = getQuizzes(quizzesMap);
   const [isWizardOpen, setIsWizardOpen] = useState(false);
   const [wizardTitle, setWizardTitle] = useState("");
   const [quiz, setQuiz] = useState({});
@@ -27,6 +26,10 @@ export default function Quizzes() {
   const [quizId, setQuizId] = useState(undefined);
   const dispatch = useDispatch();
   const history = useHistory();
+
+  const redirectToQuiz = (id) => {
+    history.push(`/manage/quizzes/${id}`);
+  };
 
   const handleCreateClick = () => {
     setWizardMode("create");
@@ -39,7 +42,7 @@ export default function Quizzes() {
       const id = uuidv4();
 
       dispatch(createQuiz({ id, quiz }));
-      history.push(`/manage/quizzes/${id}`);
+      redirectToQuiz(id);
     }
 
     if (wizardMode === "update") {
@@ -91,7 +94,10 @@ export default function Quizzes() {
               <tr>
                 <td>{quiz.title}</td>
                 <td>
-                  <Button>Questions</Button>&nbsp;
+                  <Button onClick={() => redirectToQuiz(quiz.id)}>
+                    Questions
+                  </Button>
+                  &nbsp;
                   <Button onClick={() => handleEditClick(quiz.id)}>Edit</Button>
                   &nbsp;
                   <Button onClick={() => handleRemoveClick(quiz.id)}>

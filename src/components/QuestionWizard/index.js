@@ -3,11 +3,19 @@ import PropTypes from "prop-types";
 import { Modal, Button, Form, InputGroup } from "react-bootstrap";
 
 const PROP_TYPES = {
-  isOpen: PropTypes.string,
+  isOpen: PropTypes.bool,
   onClose: PropTypes.func,
   onSave: PropTypes.func,
+  onInputChange: PropTypes.func,
+  onAddAnswer: PropTypes.func,
+  onAnswerChange: PropTypes.func,
   title: PropTypes.string,
-  answers: PropTypes.arrayOf(PropTypes.string),
+  answers: PropTypes.arrayOf(
+    PropTypes.shape({
+      id: PropTypes.string,
+      content: PropTypes.string,
+    })
+  ),
   correctAnswer: PropTypes.string,
   modalTitle: PropTypes.string,
 };
@@ -16,6 +24,9 @@ const DEFAULT_PROPS = {
   isOpen: false,
   onClose: () => {},
   onSave: () => {},
+  onInputChange: () => {},
+  onAddAnswer: () => {},
+  onAnswerChange: () => {},
   title: "",
   answers: [],
   correctAnswer: "",
@@ -26,6 +37,9 @@ export default function QuestionWizard({
   isOpen,
   onClose,
   onSave,
+  onInputChange,
+  onAddAnswer,
+  onAnswerChange,
   modalTitle,
   title,
   answers,
@@ -43,6 +57,7 @@ export default function QuestionWizard({
             type="text"
             value={title}
             name="title"
+            onChange={onInputChange}
             placeholder="Enter the title"
           />
         </Form.Group>
@@ -52,7 +67,14 @@ export default function QuestionWizard({
           {answers.map((answer) => (
             <p>
               <InputGroup>
-                <Form.Control type="text" name="answer" value={answer} />
+                <Form.Control
+                  type="text"
+                  name="answer"
+                  value={answer.content}
+                  onChange={({ target: { value } }) =>
+                    onAnswerChange(answer.id, value)
+                  }
+                />
                 <InputGroup.Append>
                   <Button>Remove</Button>
                 </InputGroup.Append>
@@ -60,16 +82,17 @@ export default function QuestionWizard({
             </p>
           ))}
           <p>
-            <Button>Add</Button>
+            <Button onClick={onAddAnswer}>Add</Button>
           </p>
         </Form.Group>
 
-        <Form.Group controlId="title">
+        <Form.Group controlId="correctAnswer">
           <Form.Label>Correct answer</Form.Label>
           <Form.Control
             type="text"
             value={correctAnswer}
-            name="title"
+            name="correctAnswer"
+            onChange={onInputChange}
             placeholder="Enter the correct answer"
           />
         </Form.Group>
