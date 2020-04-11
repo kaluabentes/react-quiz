@@ -21,7 +21,7 @@ export default function QuestionCard({ title, children, footer }) {
       <Card>
         <Card.Header>{title}</Card.Header>
         <Card.Body>{children}</Card.Body>
-        <Card.Footer>{footer}</Card.Footer>
+        {footer && <Card.Footer>{footer}</Card.Footer>}
       </Card>
     </div>
   );

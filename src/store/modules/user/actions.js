@@ -1,3 +1,3 @@
 import { createAction } from "@reduxjs/toolkit";
 
-export const addQuizResult = createAction("@user/add-quiz-result");
+export const saveQuizResult = createAction("@user/save-quiz-result");

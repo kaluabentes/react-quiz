@@ -10,6 +10,7 @@ import getListFrom from "utils/getListFrom";
 
 export default function Quizzes() {
   const quizzes = useSelector((state) => getListFrom(state.quizzes));
+  const { quizzes: quizzesResults } = useSelector((state) => state.user);
   const history = useHistory();
 
   const redirectToQuestions = (id) => {
@@ -33,7 +34,11 @@ export default function Quizzes() {
               <tr>
                 <td>{quiz.title}</td>
                 <td>
-                  <strong>20</strong> / 30 Hits
+                  {quizzesResults[quiz.id] && (
+                    <>
+                      <strong>{quizzesResults[quiz.id]}</strong> hits
+                    </>
+                  )}
                 </td>
                 <td>
                   <Button onClick={() => redirectToQuestions(quiz.id)}>

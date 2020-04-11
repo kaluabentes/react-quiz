@@ -136,7 +136,7 @@ export default function Questions() {
 
   return (
     <Layout title="Quizzes">
-      <small>{quiz.title}</small>
+      <p>{quiz.title}</p>
       <PageTitle>
         Questions <Button onClick={handleCreateClick}>Add question</Button>
       </PageTitle>
